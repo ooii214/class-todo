@@ -7,7 +7,7 @@ class Todo extends Component {
     super(props, context);
     this.state = {
       newItem: '',
-      list: [],
+      list: [{ text: '할일목록', check: false, modify: false }],
     };
   }
 
@@ -19,7 +19,11 @@ class Todo extends Component {
   addItem() {
     const newItem = {
       id: 1 + Math.random(),
-      value: this.state.newItem.slice(),
+      modify: false,
+      check: false,
+      //1 + Math.random() 를 통해서  매번 다른  uniue id 를 부여한다
+      //현재 가지고 있는  list 연산자를 이용하여  현재 list의 item를 추가하고  newItem에 push 를한다
+      text: this.state.newItem.slice(),
     };
 
     const list = [...this.state.list];
@@ -39,6 +43,21 @@ class Todo extends Component {
     });
   }
 
+  handleModify = (i, e) => {
+    let todos = this.state.list;
+    console.log('두투', todos);
+    if (e) {
+      console.log('두투리스트 :', todos[i]);
+      todos[i].text = e.target.value;
+    } else {
+      // console.log('이 값을 뭘까 :', todos[i].modify);
+      todos[i].modify = !todos[i].modify;
+    }
+    this.setState({
+      list: todos,
+    });
+  };
+
   render() {
     return (
       <Container>
@@ -49,14 +68,18 @@ class Todo extends Component {
           value={this.state.newItem}
           onChange={(e) => this.updateInput('newItem', e.target.value)}
         />
-        <TodoButton onClick={() => this.addItem()}></TodoButton>
+        <TodoButton onClick={() => this.addItem()}> 추가 </TodoButton>
         <TodoDiv>
           {this.state.list.map((item) => {
+            console.log('아이템', item);
             return (
               <TodoData key={item.id}>
-                {item.value}
+                {item.text}
                 <TodoButton onClick={() => this.deleteItem(item.id)}>
                   <i> X</i>
+                </TodoButton>
+                <TodoButton onClick={() => this.handleModify(item.modify)}>
+                  {item.modify ? '완료' : '편집'}
                 </TodoButton>
               </TodoData>
             );
@@ -69,8 +92,11 @@ class Todo extends Component {
   }
 }
 
-const Container = styled.div``;
-
+const Container = styled.div`
+  width: 100%;
+  max-width: 500px;
+  background-color: powderblue;
+`;
 const TodoInput = styled.input``;
 const Title = styled.div``;
 
