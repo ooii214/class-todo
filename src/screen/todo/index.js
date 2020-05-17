@@ -8,8 +8,8 @@ class Todo extends Component {
     this.state = {
       newItem: '',
       list: [{ text: '할일목록', check: false, modify: false }],
-      check: false,
-      checkPick: '',
+      // check: false,
+      modify: false,
     };
   }
 
@@ -62,6 +62,7 @@ class Todo extends Component {
   };
   handleCheck = (i) => {
     let todos = this.state.list;
+    console.log('원몰타임', todos);
     todos[i].check = !todos[i].check;
     this.setState({
       list: todos,
@@ -97,7 +98,7 @@ class Todo extends Component {
         />
         <TodoButton onClick={() => this.addItem()}> 추가 </TodoButton>
         <TodoList>
-          {this.state.list.map((item) => {
+          {this.state.list.map((item, e) => {
             console.log('아이템', item);
             return (
               <TodoData
@@ -113,7 +114,7 @@ class Todo extends Component {
                 <TodoButton onClick={() => this.deleteItem(item.id)}>
                   <i> X</i>
                 </TodoButton>
-                <TodoButton onClick={() => this.handleModify(item.modify)}>
+                <TodoButton onClick={() => this.handleModify(item.modify, e)}>
                   {item.modify ? '완료' : '편집'}
                 </TodoButton>
               </TodoData>
