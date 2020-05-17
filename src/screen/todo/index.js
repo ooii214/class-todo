@@ -9,7 +9,7 @@ class Todo extends Component {
       newItem: '',
       list: [{ text: '할일목록', check: false, modify: false }],
       // check: false,
-      modify: false,
+      // modify: false,
     };
   }
 
@@ -18,6 +18,7 @@ class Todo extends Component {
       [k]: v,
     });
   }
+
   addItem() {
     const newItem = {
       id: 1 + Math.random(),
@@ -47,10 +48,9 @@ class Todo extends Component {
 
   handleModify = (i, e) => {
     let todos = this.state.list;
-    // console.log('두투', todos[i].modify);
+    console.log('두투앱', todos[i]);
     if (e) {
-      console.log('두투리스트 :', todos[i]);
-      todos[i].text = e.target.value;
+      // todos[i].text = e.target.value;
     } else {
       // console.log('이 값을 뭘까 :', todos[i].modify);
       todos[i].modify = !todos[i].modify;
@@ -60,6 +60,7 @@ class Todo extends Component {
     });
     console.log('리스트', this.list);
   };
+
   handleCheck = (i) => {
     let todos = this.state.list;
     console.log('원몰타임', todos);
@@ -89,7 +90,7 @@ class Todo extends Component {
   render() {
     return (
       <Container>
-        <Title>오늘의 이야기</Title>
+        <Title>todo List</Title>
         <TodoInput
           type='text'
           placeholder='입력하새요'
@@ -102,12 +103,19 @@ class Todo extends Component {
             console.log('아이템', item);
             return (
               <TodoData
-                key={item.id}
+                key={e}
                 style={{
                   textDecoration: item.check ? 'line-through' : 'none',
                 }}
               >
-                {item.text}
+                {item.modify ? (
+                  <input
+                    type='text'
+                    onClick={() => this.handleModify(item, e)}
+                  />
+                ) : (
+                  <span>{item.text}</span>
+                )}
                 <TodoButton onClick={() => this.toggleHandler(item.id)}>
                   {item.check ? '체크V' : '체크X'}
                 </TodoButton>
@@ -121,8 +129,6 @@ class Todo extends Component {
             );
           })}
         </TodoList>
-        <Name pick='정민경' />
-        <Name pick='개미 핣기' />
       </Container>
     );
   }
@@ -134,7 +140,9 @@ const Container = styled.div`
   background-color: powderblue;
 `;
 const TodoInput = styled.input``;
-const Title = styled.div``;
+const Title = styled.div`
+  font-size: 30px;
+`;
 
 const TodoButton = styled.button``;
 const TodoList = styled.div``;
