@@ -8,6 +8,8 @@ class Todo extends Component {
     this.state = {
       newItem: '',
       list: [{ text: '할일목록', check: false, modify: false }],
+      check: false,
+      checkPick: '',
     };
   }
 
@@ -45,7 +47,7 @@ class Todo extends Component {
 
   handleModify = (i, e) => {
     let todos = this.state.list;
-    console.log('두투', todos);
+    // console.log('두투', todos[i].modify);
     if (e) {
       console.log('두투리스트 :', todos[i]);
       todos[i].text = e.target.value;
@@ -56,8 +58,33 @@ class Todo extends Component {
     this.setState({
       list: todos,
     });
+    console.log('리스트', this.list);
+  };
+  handleCheck = (i) => {
+    let todos = this.state.list;
+    todos[i].check = !todos[i].check;
+    this.setState({
+      list: todos,
+    });
   };
 
+  toggleHandler = (id) => {
+    const { list } = this.state;
+    const i = list.findIndex((todo) => todo.id === id);
+
+    const toggled = {
+      ...list[i],
+      check: !list[i].check,
+    };
+    const newTodos = [
+      ...list.slice(0, i),
+      toggled,
+      ...list.slice(i + 1, list.length),
+    ];
+    this.setState({
+      list: newTodos,
+    });
+  };
   render() {
     return (
       <Container>
@@ -69,12 +96,20 @@ class Todo extends Component {
           onChange={(e) => this.updateInput('newItem', e.target.value)}
         />
         <TodoButton onClick={() => this.addItem()}> 추가 </TodoButton>
-        <TodoDiv>
+        <TodoList>
           {this.state.list.map((item) => {
             console.log('아이템', item);
             return (
-              <TodoData key={item.id}>
+              <TodoData
+                key={item.id}
+                style={{
+                  textDecoration: item.check ? 'line-through' : 'none',
+                }}
+              >
                 {item.text}
+                <TodoButton onClick={() => this.toggleHandler(item.id)}>
+                  {item.check ? '체크V' : '체크X'}
+                </TodoButton>
                 <TodoButton onClick={() => this.deleteItem(item.id)}>
                   <i> X</i>
                 </TodoButton>
@@ -84,7 +119,7 @@ class Todo extends Component {
               </TodoData>
             );
           })}
-        </TodoDiv>
+        </TodoList>
         <Name pick='정민경' />
         <Name pick='개미 핣기' />
       </Container>
@@ -101,7 +136,7 @@ const TodoInput = styled.input``;
 const Title = styled.div``;
 
 const TodoButton = styled.button``;
-const TodoDiv = styled.div``;
+const TodoList = styled.div``;
 const TodoData = styled.div``;
 
 export { Todo };
