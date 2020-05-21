@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Todo, Name } from '../screen';
+import { Todo, Name, Modal } from '../screen';
 
 class MinRoute extends Component {
   constructor(props, context) {
@@ -11,7 +11,8 @@ class MinRoute extends Component {
     return (
       <Router>
         <Switch>
-          <Route exact path='/' component={Todo} />
+          <Route exact path='/' component={Modal} />
+          <Route path='/todo' component={Todo} />
           <Route path='/name' component={Name} />
         </Switch>
       </Router>

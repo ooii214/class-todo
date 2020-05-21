@@ -122,9 +122,6 @@ class Todo extends Component {
                 <TodoButton onClick={() => this.deleteItem(item.id)}>
                   <i> X</i>
                 </TodoButton>
-                <TodoButton onClick={() => this.handleModify(item.modify, e)}>
-                  {item.modify ? '완료' : '편집'}
-                </TodoButton>
               </TodoData>
             );
           })}
