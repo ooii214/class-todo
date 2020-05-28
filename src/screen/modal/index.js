@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
-// import { useSelector, useDispatch } from 'react-redux';
-//리덕스 스토어의 상태를 조회 할 땐 만약 상태가 바뀌지 않았으면 리렌더링하지 않습니다.
 // import {userActions} from '../actions';
 import styled from 'styled-components';
-const Modal = () => {
+import { useDispatch, useSelector } from 'react-redux';
+
+export const Modal = withRouter((props) => {
+  const dispatch = useDispatch();
+  const defaultState = useSelector((state) => state);
   const [input, setInput] = useState({
-    userName: '',
+    useName: '',
     usePassword: '',
   });
   const [submitted, setSubmitted] = useState(false);
@@ -60,7 +62,7 @@ const Modal = () => {
       </ModalHalf>
     </Container>
   );
-};
+});
 
 const Container = styled.div``;
 
@@ -125,4 +127,3 @@ const LoginInput = styled.input`
 `;
 
 const Lbotton = styled.button``;
-export { Modal };
