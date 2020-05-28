@@ -1,20 +1,53 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
+import { withRouter } from 'react-router-dom';
+// import { useSelector, useDispatch } from 'react-redux';
+//리덕스 스토어의 상태를 조회 할 땐 만약 상태가 바뀌지 않았으면 리렌더링하지 않습니다.
+// import {userActions} from '../actions';
 import styled from 'styled-components';
-class Modal extends Component {
-  constructor(props, context) {
-    super(props, context);
-  }
+const Modal = () => {
+  const [input, setInput] = useState({
+    userName: '',
+    usePassword: '',
+  });
+  const [submitted, setSubmitted] = useState(false);
+  const { useName, usePassword } = input;
+  // const loggingIn = useSelector((state) => state.authentication.loggingIn);
+  //리덕스의 상태값을 조회하기 위한 hook 함수로 이전의 connect 를 통해 상태값을 조회하는 것보다 훨씬 간결하게 작성하고 코드가독성이 상승되는 장점이 있는 함수입니다. 사용방법은 다음과 같습니다.
+  // const dispatch = useDispatch();
 
-  renderModal = () => {
-    return (
-      <React.Fragment>
-        <ModalOverlay />
-        <ModalHalf>
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setInput((input) => ({ ...input, [name]: value }));
+  }
+  function handleSubmit(e) {
+    e.preventDefault();
+    setSubmitted(true);
+    if (useName && usePassword) {
+      // dispatch(userActions.login(userName ,usePassword))
+    }
+  }
+  return (
+    <Container>
+      <ModalOverlay />
+      <ModalHalf>
+        <LoginForm onSubmit={handleSubmit}>
           <LoginModal>
             <LoginText>LOGIN</LoginText>
-            <LoginInput placeholder='이메일' type='text'></LoginInput>
-            <LoginInput placeholder='비밀번호' type='password'></LoginInput>
-            <Lbotton onClick={() => alert('하이')}>로그인</Lbotton>
+            <LoginInput
+              placeholder='이메일'
+              type='text'
+              value={useName}
+              onChange={handleChange}
+            />
+            {submitted && !useName && <div>UseName is required</div>}
+            <LoginInput
+              placeholder='비밀번호'
+              type='password'
+              value={usePassword}
+              onChange={handleChange}
+            />
+            {submitted && !usePassword && <div>Password is required</div>}
+            <Lbotton>로그인</Lbotton>
             <LoginText>Forgot Password ?</LoginText>
             <Lbotton>비밀번호 찾기</Lbotton>
             <Lbotton>네이버 로그인</Lbotton>
@@ -23,15 +56,12 @@ class Modal extends Component {
             <LoginText> Not yet an min member?</LoginText>
             <Lbotton>Sign up</Lbotton>
           </LoginModal>
-        </ModalHalf>
-      </React.Fragment>
-    );
-  };
+        </LoginForm>
+      </ModalHalf>
+    </Container>
+  );
+};
 
-  render() {
-    return <Container>{this.renderModal()}</Container>;
-  }
-}
 const Container = styled.div``;
 
 const ModalOverlay = styled.div`
@@ -72,16 +102,24 @@ const LoginModal = styled.div`
   background-color: #ffffff;
 `;
 
+const LoginForm = styled.form`
+  max-width: 360px;
+  max-height: 530px;
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+`;
+
 const LoginText = styled.div`
   font-size: 34px;
   font-weight: 700;
   color: #ed2553;
 `;
 
-const LoginForm = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
+// const LoginForm = styled.div`
+//   display: flex;
+//   flex-direction: column;
+// `;
 const LoginInput = styled.input`
   display: flex;
 `;
