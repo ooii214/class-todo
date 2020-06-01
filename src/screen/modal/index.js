@@ -6,59 +6,55 @@ import { useDispatch, useSelector } from 'react-redux';
 
 export const Modal = withRouter((props) => {
   const dispatch = useDispatch();
-  const defaultState = useSelector((state) => state);
-  const [input, setInput] = useState({
-    useName: '',
-    usePassword: '',
-  });
   const [submitted, setSubmitted] = useState(false);
-  const { useName, usePassword } = input;
-  // const loggingIn = useSelector((state) => state.authentication.loggingIn);
+  const [userName, setUserName] = useState('');
+  const [password, setPassword] = useState('');
+  const [alert, setAlert] = useState('');
+  const defaultState = useSelector((state) => state);
   //리덕스의 상태값을 조회하기 위한 hook 함수로 이전의 connect 를 통해 상태값을 조회하는 것보다 훨씬 간결하게 작성하고 코드가독성이 상승되는 장점이 있는 함수입니다. 사용방법은 다음과 같습니다.
   // const dispatch = useDispatch();
-
-  function handleChange(e) {
-    const { name, value } = e.target;
-    setInput((input) => ({ ...input, [name]: value }));
-  }
-  function handleSubmit(e) {
-    e.preventDefault();
-    setSubmitted(true);
-    if (useName && usePassword) {
-      // dispatch(userActions.login(userName ,usePassword))
+  const signIn = () => {
+    // console.log('하핳');
+    if (userName === 'qwe' && password === '1234') {
+      setSubmitted(false);
+      setAlert('Login Successfully');
+      props.history.push('/todo');
+    } else {
+      console.log('하핳111');
+      setSubmitted(true);
+      setAlert('username or password is not correct');
     }
-  }
+  };
   return (
     <Container>
       <ModalOverlay />
       <ModalHalf>
-        <LoginForm onSubmit={handleSubmit}>
-          <LoginModal>
-            <LoginText>LOGIN</LoginText>
-            <LoginInput
-              placeholder='이메일'
-              type='text'
-              value={useName}
-              onChange={handleChange}
-            />
-            {submitted && !useName && <div>UseName is required</div>}
-            <LoginInput
-              placeholder='비밀번호'
-              type='password'
-              value={usePassword}
-              onChange={handleChange}
-            />
-            {submitted && !usePassword && <div>Password is required</div>}
-            <Lbotton>로그인</Lbotton>
-            <LoginText>Forgot Password ?</LoginText>
-            <Lbotton>비밀번호 찾기</Lbotton>
-            <Lbotton>네이버 로그인</Lbotton>
-            <Lbotton>카카오 로그인</Lbotton>
-            <Lbotton>구글 로그인</Lbotton>
-            <LoginText> Not yet an min member?</LoginText>
-            <Lbotton>Sign up</Lbotton>
-          </LoginModal>
-        </LoginForm>
+        <LoginModal>
+          <LoginText>LOGIN</LoginText>
+          <LoginInput
+            placeholder='아이디'
+            type='text'
+            onChange={(e) => setUserName(e.target.value)}
+            submitted={submitted}
+          />
+          {/* {submitted && !useName && <div>UseName is required</div>} */}
+          <LoginInput
+            placeholder='비밀번호'
+            type='password'
+            onChange={(e) => setPassword(e.target.value)}
+            submitted={submitted}
+          />
+          {alert}
+          {/* {submitted && !usePassword && <div>Password is required</div>} */}
+          <Lbotton onClick={() => signIn()}>로그인</Lbotton>
+          <LoginText>Forgot Password ?</LoginText>
+          <Lbotton>비밀번호 찾기</Lbotton>
+          <Lbotton>네이버 로그인</Lbotton>
+          <Lbotton>카카오 로그인</Lbotton>
+          <Lbotton>구글 로그인</Lbotton>
+          <LoginText> Not yet an min member?</LoginText>
+          <Lbotton>Sign up</Lbotton>
+        </LoginModal>
       </ModalHalf>
     </Container>
   );
@@ -97,14 +93,6 @@ const ModalHalf = styled.div`
 `;
 
 const LoginModal = styled.div`
-  max-width: 360px;
-  max-height: 530px;
-  width: 100%;
-  height: 100%;
-  background-color: #ffffff;
-`;
-
-const LoginForm = styled.form`
   max-width: 360px;
   max-height: 530px;
   width: 100%;
