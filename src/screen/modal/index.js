@@ -14,23 +14,23 @@ export const Modal = withRouter((props) => {
   //리덕스의 상태값을 조회하기 위한 hook 함수로 이전의 connect 를 통해 상태값을 조회하는 것보다 훨씬 간결하게 작성하고 코드가독성이 상승되는 장점이 있는 함수입니다. 사용방법은 다음과 같습니다.
   // const dispatch = useDispatch();
   const signIn = () => {
-    // console.log('하핳');
     if (userName === 'qwe' && password === '1234') {
       setSubmitted(false);
       setAlert('Login Successfully');
       props.history.push('/todo');
     } else {
-      console.log('하핳111');
       setSubmitted(true);
       setAlert('username or password is not correct');
     }
   };
+  const signUp = () => {};
+
   return (
     <Container>
       <ModalOverlay />
       <ModalHalf>
         <LoginModal>
-          <LoginText>LOGIN</LoginText>
+          <LoginText size={34}>LOGIN</LoginText>
           <LoginInput
             placeholder='아이디'
             type='text'
@@ -52,8 +52,12 @@ export const Modal = withRouter((props) => {
           <Lbotton>네이버 로그인</Lbotton>
           <Lbotton>카카오 로그인</Lbotton>
           <Lbotton>구글 로그인</Lbotton>
-          <LoginText> Not yet an min member?</LoginText>
-          <Lbotton>Sign up</Lbotton>
+          {/* <LoginText> Not yet an min member?</LoginText> */}
+          <LoginText size={34}>SignUp</LoginText>
+          <LoginInput placeholder='아이디' type='text' />
+          <LoginInput placeholder='비밀번호' type='password' />
+          <LoginInput placeholder='비밀번호확인' type='password' />
+          <Lbotton onClick={() => signUp()}>Sign up</Lbotton>
         </LoginModal>
       </ModalHalf>
     </Container>
@@ -101,7 +105,7 @@ const LoginModal = styled.div`
 `;
 
 const LoginText = styled.div`
-  font-size: 34px;
+  font-size: ${(props) => props.size}px;
   font-weight: 700;
   color: #ed2553;
 `;
